@@ -3496,4 +3496,10 @@
         AD8/dpwHGaKKAERVRuBUq0UUAf/Z
 </value>
   </data>
+  <data name="lblRuleDescription.Text" xml:space="preserve">
+    <value>Click a die and it's outline will turn green. Green dice will not roll 
+again. Red dice will. After 3 rolls, or once all dice are green, your 
+total score will be added up and you may select which score category 
+you would like to put the total into.</value>
+  </data>
 </root>

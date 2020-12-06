@@ -8,8 +8,19 @@ Option Explicit On
 '               roll 5 dice up to a maximum of 3 times. The user can keep dice from rolling again
 '               by changing it's border to green. If the border is red, the dice will roll again.
 
+
+
 Public Class FrmYahtzee
+    'Declare all global variables
+    Dim intCurrentRollCount As Integer
+
     Public Sub FrmYahtzee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Sets the remaining roll count initially to 3
+        intCurrentRollCount = 3
+
+        'Displays the remaining roll count to the player
+        lblRollCounter.Text = "You have " & intCurrentRollCount & " rolls remaining"
+
         'This creates an array to hold dice images
         Dim imgDiceImagesArr(5) As Image
 
@@ -18,6 +29,10 @@ Public Class FrmYahtzee
 
         'This creates an array to hold kept dice values when turned green
         Dim intKeptDiceValuesArr(4) As Integer
+
+        'This displays the Yahtzee banner/title image
+        picYahtzeeBanner.Image = Image.FromFile("..\Images\yahtzeeBanner.jpg")
+        picYahtzeeBanner.SizeMode = PictureBoxSizeMode.StretchImage
 
         'This adds a dice image to each index of imgDiceArr(5)
         imgDiceImagesArr(0) = Image.FromFile("..\Images\dice1.jpg")
@@ -36,36 +51,52 @@ Public Class FrmYahtzee
         BtnDice1.BackgroundImage = imgDiceImagesArr(5)
         'Last it sets the BackgroundImageLayout to Stretch to take up the whole button
         BtnDice1.BackgroundImageLayout = ImageLayout.Stretch
+        'Changes the users' cursor to a hand when hovering over the button
+        BtnDice1.Cursor = Cursors.Hand
 
         'This code block sets up how the 2nd die looks
         BtnDice2.FlatStyle = FlatStyle.Flat
         BtnDice2.FlatAppearance.BorderColor = Color.Red
         BtnDice2.BackgroundImage = imgDiceImagesArr(5)
         BtnDice2.BackgroundImageLayout = ImageLayout.Stretch
+        BtnDice2.Cursor = Cursors.Hand
 
         'This code block sets up how the 3rd die looks
         BtnDice3.FlatStyle = FlatStyle.Flat
         BtnDice3.FlatAppearance.BorderColor = Color.Red
         BtnDice3.BackgroundImage = imgDiceImagesArr(5)
         BtnDice3.BackgroundImageLayout = ImageLayout.Stretch
+        BtnDice3.Cursor = Cursors.Hand
 
         'This code block sets up how the 4th die looks
         BtnDice4.FlatStyle = FlatStyle.Flat
         BtnDice4.FlatAppearance.BorderColor = Color.Red
         BtnDice4.BackgroundImage = imgDiceImagesArr(5)
         BtnDice4.BackgroundImageLayout = ImageLayout.Stretch
+        BtnDice4.Cursor = Cursors.Hand
 
         'This code block sets up how the 5th die looks
         BtnDice5.FlatStyle = FlatStyle.Flat
         BtnDice5.FlatAppearance.BorderColor = Color.Red
         BtnDice5.BackgroundImage = imgDiceImagesArr(5)
         BtnDice5.BackgroundImageLayout = ImageLayout.Stretch
+        BtnDice5.Cursor = Cursors.Hand
+
     End Sub
 
 
 
     Public Sub BtnRollTheDice_Click(sender As Object, e As EventArgs) Handles BtnRollTheDice.Click
+        'Decreases the remaining dice rolls by 1
+        intCurrentRollCount -= 1
+
+        'Displays the current roll count to the screen
+        lblRollCounter.Text = "You have " & intCurrentRollCount & " rolls remaining"
+
+        'Set up a new Random Object in memory
         Dim rand As New Random
+
+        'Generates a new array of random numbers to associate with the dice
         Dim intDieValueArr(4) As Integer
         intDieValueArr(0) = GenerateRandomDiceNum(rand)
         intDieValueArr(1) = GenerateRandomDiceNum(rand)
@@ -147,46 +178,7 @@ Public Class FrmYahtzee
         ElseIf intDieValueArr(1) = 6 Then
             BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
         End If
-
-        System.Diagnostics.Debug.WriteLine(intDieValueArr(0) & " " & intDieValueArr(1) & " " & intDieValueArr(2) & " " & intDieValueArr(3) & " " & intDieValueArr(4))
-
-
-
-        'If BtnDice1.FlatAppearance.BorderColor = Color.Green Then
-
-        'End If
-        'if true, kept, if false ready to roll
-        ' Dim blnKeptDiceArr() As Boolean {False, False, False, False, False}
-        'Dim intDiceNumbersArr(4) As Integer
-
-
-        'intVar1 = GenerateRandomDieNum(blnKeptDice(i))
-
-        'System.Diagnostics.Debug.Write(intVar2 & " intVar2 ")
-
-        'Loop through the intDieNumbers array and give each index(die) a random number
-        'For i = 0 To intDice.Length - 1
-        'intVar1 = GenerateRandomDieNum()
-
-
-
-        'picComputerPicture.Image = Image.FromFile("..\Images\dwayneJohnsonRock.jpg")
-
-
-
-
-
-
-
-        'Next
-
-        'For each die, give it it's own random number, from 1-6
-
-
-
     End Sub
-
-
 
 
     '================================================================================================================
@@ -242,12 +234,17 @@ Public Class FrmYahtzee
         End If
     End Sub
 
+
+
     Public Function GenerateRandomDiceNum(random As Random) As Integer
         Dim intDieValue As Integer = random.Next(1, 7)
         Return intDieValue
     End Function
 
-
+    Public Function IncreaseRollCount(currentRollCount As Integer) As Integer
+        Dim intRollCounter As Integer
+        intRollCounter += currentRollCount
+    End Function
 
     'Dim intDieValue As Integer
     'Dim rand As New Random
@@ -303,11 +300,19 @@ Public Class FrmYahtzee
     'Return intRandomDieSide()
     'End Function
 
-
-    Private Sub BtnExit_Click(sender As Object, e As EventArgs) Handles BtnExit.Click
-        Close()
+    Private Sub BtnRestartGame_Click(sender As Object, e As EventArgs) Handles BtnRestartGame.Click
+        'Clears all the controls on the Form
+        Controls.Clear()
+        'Reinitializes all components
+        InitializeComponent()
+        'Reloads controls onto form and performs load event
+        FrmYahtzee_Load(e, e)
     End Sub
 
+    Private Sub BtnExit_Click(sender As Object, e As EventArgs) Handles BtnExit.Click
+        'Closes Program
+        Close()
+    End Sub
 
 End Class
 
