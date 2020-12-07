@@ -93,6 +93,7 @@ Partial Class FrmYahtzee
         'BtnDice1
         '
         Me.BtnDice1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnDice1.ForeColor = System.Drawing.Color.Black
         Me.BtnDice1.Location = New System.Drawing.Point(109, 272)
         Me.BtnDice1.Name = "BtnDice1"
         Me.BtnDice1.Size = New System.Drawing.Size(111, 106)
