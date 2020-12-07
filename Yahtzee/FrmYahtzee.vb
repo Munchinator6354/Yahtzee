@@ -82,11 +82,21 @@ Public Class FrmYahtzee
 
             'Generates a new array of random numbers to associate with the dice
             Dim intDieValueArr(4) As Integer
-            intDieValueArr(0) = GenerateRandomDiceNum(rand)
-            intDieValueArr(1) = GenerateRandomDiceNum(rand)
-            intDieValueArr(2) = GenerateRandomDiceNum(rand)
-            intDieValueArr(3) = GenerateRandomDiceNum(rand)
-            intDieValueArr(4) = GenerateRandomDiceNum(rand)
+
+            'intDieValueArr(0) = GenerateRandomDiceNum(rand)
+            'intDieValueArr(1) = GenerateRandomDiceNum(rand)
+            'intDieValueArr(2) = GenerateRandomDiceNum(rand)
+            'intDieValueArr(3) = GenerateRandomDiceNum(rand)
+            'intDieValueArr(4) = GenerateRandomDiceNum(rand)
+
+            For i = 0 To blnKeptDiceArray.Length - 1
+                If blnKeptDiceArray(i) = True Then
+                    intDieValueArr(i) = intDieValueArr(i)
+                ElseIf blnKeptDiceArray(i) = False Then
+                    intDieValueArr(i) = GenerateRandomDiceNum(rand)
+                End If
+            Next
+
 
             'This block of code changes the appearence of each die button depending on it's dice value
             For i = 0 To intDieValueArr.Length - 1
