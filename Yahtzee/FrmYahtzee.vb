@@ -9,14 +9,20 @@ Option Explicit On
 '               by changing it's border to green. If the border is red, the dice will roll again.
 
 Public Class FrmYahtzee
-    'Global roll count variable
+    'Globally sets up a new Random Object in memory
+    Dim rand As New Random
+
+    'Global variable of remaining roll count
     Dim intCurrentRollCount As Integer
+
+    'Global variable holding total for the round of dice rolls
+    Dim intRollRoundTotal As Integer
 
     'Global array of dice buttons
     Dim BtnArray(4) As Button
 
     'Global array of kept/held dice
-    Dim blnKeptDiceArray(4) As Boolean
+    Dim blnKeptDiceArray() As Boolean = {False, False, False, False, False}
 
     'Global array to hold dice images
     Dim imgDiceImagesArr(5) As Image
@@ -24,8 +30,15 @@ Public Class FrmYahtzee
     'Global array to hold integer values for the dice
     Dim intDieValueArr() As Integer = {6, 6, 6, 6, 6}
 
-
     Public Sub FrmYahtzee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'On second game playthrough this allows blnKeptDiceArray to refresh all elements as "False"
+        For i = 0 To blnKeptDiceArray.Length - 1
+            blnKeptDiceArray(i) = False
+        Next
+
+        'On second game playthrough this allows intRollRoundTotal to refresh at 0
+        intRollRoundTotal = 0
+
         'Sets the remaining roll count initially to 3
         intCurrentRollCount = 3
 
@@ -77,18 +90,11 @@ Public Class FrmYahtzee
             'Displays the current roll count to the screen
             lblRollCounter.Text = "You have " & intCurrentRollCount & " rolls remaining"
 
-            'Set up a new Random Object in memory
-            Dim rand As New Random
 
-            'Generates a new array of random numbers to associate with the dice
+            'Establishes a new array to hold dice values in
             Dim intDieValueArr(4) As Integer
 
-            'intDieValueArr(0) = GenerateRandomDiceNum(rand)
-            'intDieValueArr(1) = GenerateRandomDiceNum(rand)
-            'intDieValueArr(2) = GenerateRandomDiceNum(rand)
-            'intDieValueArr(3) = GenerateRandomDiceNum(rand)
-            'intDieValueArr(4) = GenerateRandomDiceNum(rand)
-
+            'This block of code will check if a dice has been held/kept. If it has it will not re-roll the dice
             For i = 0 To blnKeptDiceArray.Length - 1
                 If blnKeptDiceArray(i) = True Then
                     intDieValueArr(i) = intDieValueArr(i)
@@ -96,8 +102,7 @@ Public Class FrmYahtzee
                     intDieValueArr(i) = GenerateRandomDiceNum(rand)
                 End If
             Next
-
-
+            ' System.Diagnostics.Debug.WriteLine("intDieValueArr Here:" & intDieValueArr(0) & intDieValueArr(1) & intDieValueArr(2) & intDieValueArr(3) & intDieValueArr(4))
             'This block of code changes the appearence of each die button depending on it's dice value
             For i = 0 To intDieValueArr.Length - 1
                 If intDieValueArr(i) = 1 Then
@@ -115,9 +120,16 @@ Public Class FrmYahtzee
                 End If
             Next
 
+            If intCurrentRollCount = 0 Then
+                For i = 0 To intDieValueArr.Length - 1
+                    blnKeptDiceArray(i) = True
+                    intRollRoundTotal += intDieValueArr(i)
+                Next
+                lblScoreCounter.Text = "This round's score is " & intRollRoundTotal & vbCrLf & "Select a category to add this score to."
+                MsgBox("You rolled a score of " & intRollRoundTotal & vbCrLf & "Please apply it to a score tile")
+            End If
         Else
             MsgBox("You are out of rolls")
-
         End If
 
     End Sub
@@ -139,7 +151,6 @@ Public Class FrmYahtzee
             'And switch it's kept/held value to False
             blnKeptDiceArray(0) = False
         End If
-        'System.Diagnostics.Debug.WriteLine(blnKeptDiceArray(0) & blnKeptDiceArray(1) & blnKeptDiceArray(2) & blnKeptDiceArray(3) & blnKeptDiceArray(4))
 
     End Sub
 
