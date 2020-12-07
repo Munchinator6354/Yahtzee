@@ -2,17 +2,17 @@
 Option Explicit On
 'Program:       Yahtzee
 '               Final Project  - Yahtzee Game (Alternative)
-'Programmers:   Ryan Isaacson / Github:Munchinator6354 & Kenneth Young
+'Programmers:   Ryan Isaacson / Github: Munchinator6354 & Kenneth Young
 'Updated:       December 11, 2020
 'Description    This program will allow the user to play the classic game Yahtzee. The player will
 '               roll 5 dice up to a maximum of 3 times. The user can keep dice from rolling again
 '               by changing it's border to green. If the border is red, the dice will roll again.
 
-
-
 Public Class FrmYahtzee
-    'Declare all global variables
+    'Global roll count variable
     Dim intCurrentRollCount As Integer
+    'Global array of dice buttons
+    Dim BtnArray(4) As Button
 
     Public Sub FrmYahtzee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Sets the remaining roll count initially to 3
@@ -42,142 +42,186 @@ Public Class FrmYahtzee
         imgDiceImagesArr(4) = Image.FromFile("..\Images\dice5.jpg")
         imgDiceImagesArr(5) = Image.FromFile("..\Images\dice6.jpg")
 
+        'Establishing values for the button aray to iterate through later
+        BtnArray(0) = BtnDice1
+        BtnArray(1) = BtnDice2
+        BtnArray(2) = BtnDice3
+        BtnArray(3) = BtnDice4
+        BtnArray(4) = BtnDice5
+
+        'This loop sets up how each die appears to the player
+        For i = 0 To BtnArray.Length - 1
+            'First it sets the button style to the Flatstyle
+            BtnArray(i).FlatStyle = FlatStyle.Flat
+            'Second it sets the buttons Flatstyle BorderColor to Red
+            BtnArray(i).FlatAppearance.BorderColor = Color.Red
+            'Third it sets the button's BackgroundImage to desired Array Index
+            BtnArray(i).BackgroundImage = imgDiceImagesArr(5)
+            'Last it sets the BackgroundImageLayout to Stretch to take up the whole button
+            BtnArray(i).BackgroundImageLayout = ImageLayout.Stretch
+            'Changes the users' cursor to a hand when hovering over the button
+            BtnArray(i).Cursor = Cursors.Hand
+        Next
+
         'This code block sets up how the 1st die looks
         'First it sets the button style to the Flatstyle
-        BtnDice1.FlatStyle = FlatStyle.Flat
+        'BtnDice1.FlatStyle = FlatStyle.Flat
         'Second it sets the buttons Flatstyle BorderColor to Red
-        BtnDice1.FlatAppearance.BorderColor = Color.Red
+        'BtnDice1.FlatAppearance.BorderColor = Color.Red
         'Third it sets the button's BackgroundImage to desired Array Index
-        BtnDice1.BackgroundImage = imgDiceImagesArr(5)
+        'BtnDice1.BackgroundImage = imgDiceImagesArr(5)
         'Last it sets the BackgroundImageLayout to Stretch to take up the whole button
-        BtnDice1.BackgroundImageLayout = ImageLayout.Stretch
+        'BtnDice1.BackgroundImageLayout = ImageLayout.Stretch
         'Changes the users' cursor to a hand when hovering over the button
-        BtnDice1.Cursor = Cursors.Hand
+        'BtnDice1.Cursor = Cursors.Hand
 
         'This code block sets up how the 2nd die looks
-        BtnDice2.FlatStyle = FlatStyle.Flat
-        BtnDice2.FlatAppearance.BorderColor = Color.Red
-        BtnDice2.BackgroundImage = imgDiceImagesArr(5)
-        BtnDice2.BackgroundImageLayout = ImageLayout.Stretch
-        BtnDice2.Cursor = Cursors.Hand
+        'BtnDice2.FlatStyle = FlatStyle.Flat
+        'BtnDice2.FlatAppearance.BorderColor = Color.Red
+        'BtnDice2.BackgroundImage = imgDiceImagesArr(5)
+        'BtnDice2.BackgroundImageLayout = ImageLayout.Stretch
+        'BtnDice2.Cursor = Cursors.Hand
 
         'This code block sets up how the 3rd die looks
-        BtnDice3.FlatStyle = FlatStyle.Flat
-        BtnDice3.FlatAppearance.BorderColor = Color.Red
-        BtnDice3.BackgroundImage = imgDiceImagesArr(5)
-        BtnDice3.BackgroundImageLayout = ImageLayout.Stretch
-        BtnDice3.Cursor = Cursors.Hand
+        'BtnDice3.FlatStyle = FlatStyle.Flat
+        'BtnDice3.FlatAppearance.BorderColor = Color.Red
+        'BtnDice3.BackgroundImage = imgDiceImagesArr(5)
+        'BtnDice3.BackgroundImageLayout = ImageLayout.Stretch
+        'BtnDice3.Cursor = Cursors.Hand
 
         'This code block sets up how the 4th die looks
-        BtnDice4.FlatStyle = FlatStyle.Flat
-        BtnDice4.FlatAppearance.BorderColor = Color.Red
-        BtnDice4.BackgroundImage = imgDiceImagesArr(5)
-        BtnDice4.BackgroundImageLayout = ImageLayout.Stretch
-        BtnDice4.Cursor = Cursors.Hand
+        'BtnDice4.FlatStyle = FlatStyle.Flat
+        'BtnDice4.FlatAppearance.BorderColor = Color.Red
+        'BtnDice4.BackgroundImage = imgDiceImagesArr(5)
+        'BtnDice4.BackgroundImageLayout = ImageLayout.Stretch
+        'BtnDice4.Cursor = Cursors.Hand
 
         'This code block sets up how the 5th die looks
-        BtnDice5.FlatStyle = FlatStyle.Flat
-        BtnDice5.FlatAppearance.BorderColor = Color.Red
-        BtnDice5.BackgroundImage = imgDiceImagesArr(5)
-        BtnDice5.BackgroundImageLayout = ImageLayout.Stretch
-        BtnDice5.Cursor = Cursors.Hand
+        'BtnDice5.FlatStyle = FlatStyle.Flat
+        'BtnDice5.FlatAppearance.BorderColor = Color.Red
+        'BtnDice5.BackgroundImage = imgDiceImagesArr(5)
+        'BtnDice5.BackgroundImageLayout = ImageLayout.Stretch
+        'BtnDice5.Cursor = Cursors.Hand
 
     End Sub
-
-
 
     Public Sub BtnRollTheDice_Click(sender As Object, e As EventArgs) Handles BtnRollTheDice.Click
         'Decreases the remaining dice rolls by 1
         intCurrentRollCount -= 1
 
-        'Displays the current roll count to the screen
-        lblRollCounter.Text = "You have " & intCurrentRollCount & " rolls remaining"
+        'Checks to qualify if the player has more dice rolls left
+        If intCurrentRollCount >= 0 Then
 
-        'Set up a new Random Object in memory
-        Dim rand As New Random
+            'Displays the current roll count to the screen
+            lblRollCounter.Text = "You have " & intCurrentRollCount & " rolls remaining"
 
-        'Generates a new array of random numbers to associate with the dice
-        Dim intDieValueArr(4) As Integer
-        intDieValueArr(0) = GenerateRandomDiceNum(rand)
-        intDieValueArr(1) = GenerateRandomDiceNum(rand)
-        intDieValueArr(2) = GenerateRandomDiceNum(rand)
-        intDieValueArr(3) = GenerateRandomDiceNum(rand)
-        intDieValueArr(4) = GenerateRandomDiceNum(rand)
+            'Set up a new Random Object in memory
+            Dim rand As New Random
 
-        'This block will change the picture of die 1 based on the value of it inside intDieValueArr()
-        If intDieValueArr(0) = 1 Then
-            BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
-        ElseIf intDieValueArr(0) = 2 Then
-            BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
-        ElseIf intDieValueArr(0) = 3 Then
-            BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
-        ElseIf intDieValueArr(0) = 4 Then
-            BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
-        ElseIf intDieValueArr(0) = 5 Then
-            BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
-        ElseIf intDieValueArr(0) = 6 Then
-            BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
+            'Generates a new array of random numbers to associate with the dice
+            Dim intDieValueArr(4) As Integer
+            intDieValueArr(0) = GenerateRandomDiceNum(rand)
+            intDieValueArr(1) = GenerateRandomDiceNum(rand)
+            intDieValueArr(2) = GenerateRandomDiceNum(rand)
+            intDieValueArr(3) = GenerateRandomDiceNum(rand)
+            intDieValueArr(4) = GenerateRandomDiceNum(rand)
+
+            'This block of code changes the appearence of each die button depending on it's dice value
+            For i = 0 To intDieValueArr.Length - 1
+                If intDieValueArr(i) = 1 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
+                ElseIf intDieValueArr(i) = 2 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
+                ElseIf intDieValueArr(i) = 3 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
+                ElseIf intDieValueArr(i) = 4 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
+                ElseIf intDieValueArr(i) = 5 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
+                ElseIf intDieValueArr(i) = 6 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
+                End If
+            Next
+
+            'This block will change the picture of die 1 based on the value of it inside intDieValueArr()
+            'If intDieValueArr(0) = 1 Then
+            '        BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
+            '    ElseIf intDieValueArr(0) = 2 Then
+            '        BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
+            '    ElseIf intDieValueArr(0) = 3 Then
+            '        BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
+            '    ElseIf intDieValueArr(0) = 4 Then
+            '        BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
+            '    ElseIf intDieValueArr(0) = 5 Then
+            '        BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
+            '    ElseIf intDieValueArr(0) = 6 Then
+            '        BtnDice1.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
+            'End If
+
+            'This block will change the picture of die 2 based on the value of it inside intDieValueArr()
+            'If intDieValueArr(1) = 1 Then
+            '    BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
+            'ElseIf intDieValueArr(1) = 2 Then
+            '    BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
+            'ElseIf intDieValueArr(1) = 3 Then
+            '    BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
+            'ElseIf intDieValueArr(1) = 4 Then
+            '    BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
+            'ElseIf intDieValueArr(1) = 5 Then
+            '    BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
+            'ElseIf intDieValueArr(1) = 6 Then
+            '    BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
+            'End If
+
+            'This block will change the picture of die 3 based on the value of it inside intDieValueArr()
+            'If intDieValueArr(2) = 1 Then
+            '    BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
+            'ElseIf intDieValueArr(1) = 2 Then
+            '    BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
+            'ElseIf intDieValueArr(1) = 3 Then
+            '    BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
+            'ElseIf intDieValueArr(1) = 4 Then
+            '    BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
+            'ElseIf intDieValueArr(1) = 5 Then
+            '    BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
+            'ElseIf intDieValueArr(1) = 6 Then
+            '    BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
+            'End If
+
+            'This block will change the picture of die 4 based on the value of it inside intDieValueArr()
+            'If intDieValueArr(3) = 1 Then
+            '    BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
+            'ElseIf intDieValueArr(1) = 2 Then
+            '    BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
+            'ElseIf intDieValueArr(1) = 3 Then
+            '    BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
+            'ElseIf intDieValueArr(1) = 4 Then
+            '    BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
+            'ElseIf intDieValueArr(1) = 5 Then
+            '    BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
+            'ElseIf intDieValueArr(1) = 6 Then
+            '    BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
+            'End If
+
+            'This block will change the picture of die 5 based on the value of it inside intDieValueArr()
+            '    If intDieValueArr(4) = 1 Then
+            '        BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
+            '    ElseIf intDieValueArr(1) = 2 Then
+            '        BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
+            '    ElseIf intDieValueArr(1) = 3 Then
+            '        BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
+            '    ElseIf intDieValueArr(1) = 4 Then
+            '        BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
+            '    ElseIf intDieValueArr(1) = 5 Then
+            '        BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
+            '    ElseIf intDieValueArr(1) = 6 Then
+            '        BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
+            '    End If
+        Else
+            MsgBox("You are out of rolls")
+
         End If
 
-        'This block will change the picture of die 2 based on the value of it inside intDieValueArr()
-        If intDieValueArr(1) = 1 Then
-            BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
-        ElseIf intDieValueArr(1) = 2 Then
-            BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
-        ElseIf intDieValueArr(1) = 3 Then
-            BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
-        ElseIf intDieValueArr(1) = 4 Then
-            BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
-        ElseIf intDieValueArr(1) = 5 Then
-            BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
-        ElseIf intDieValueArr(1) = 6 Then
-            BtnDice2.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
-        End If
-
-        'This block will change the picture of die 3 based on the value of it inside intDieValueArr()
-        If intDieValueArr(2) = 1 Then
-            BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
-        ElseIf intDieValueArr(1) = 2 Then
-            BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
-        ElseIf intDieValueArr(1) = 3 Then
-            BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
-        ElseIf intDieValueArr(1) = 4 Then
-            BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
-        ElseIf intDieValueArr(1) = 5 Then
-            BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
-        ElseIf intDieValueArr(1) = 6 Then
-            BtnDice3.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
-        End If
-
-        'This block will change the picture of die 4 based on the value of it inside intDieValueArr()
-        If intDieValueArr(3) = 1 Then
-            BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
-        ElseIf intDieValueArr(1) = 2 Then
-            BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
-        ElseIf intDieValueArr(1) = 3 Then
-            BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
-        ElseIf intDieValueArr(1) = 4 Then
-            BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
-        ElseIf intDieValueArr(1) = 5 Then
-            BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
-        ElseIf intDieValueArr(1) = 6 Then
-            BtnDice4.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
-        End If
-
-        'This block will change the picture of die 5 based on the value of it inside intDieValueArr()
-        If intDieValueArr(4) = 1 Then
-            BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
-        ElseIf intDieValueArr(1) = 2 Then
-            BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
-        ElseIf intDieValueArr(1) = 3 Then
-            BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
-        ElseIf intDieValueArr(1) = 4 Then
-            BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
-        ElseIf intDieValueArr(1) = 5 Then
-            BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
-        ElseIf intDieValueArr(1) = 6 Then
-            BtnDice5.BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
-        End If
     End Sub
 
 
@@ -246,11 +290,6 @@ Public Class FrmYahtzee
         intRollCounter += currentRollCount
     End Function
 
-    'Dim intDieValue As Integer
-    'Dim rand As New Random
-    'intDieValue = rand.Next(1, 7)
-    'Return intDieValue
-    'End Function
 
 
 
@@ -273,31 +312,8 @@ Public Class FrmYahtzee
 
     'ElseIf blnKeptDiceArray(i) = False Then
 
-
-    'Creates a New Random object in memory
-    'Dim rand As New Random
-
-    'Generates new random integer from 1-6 inside intDieValue
-    'intDieValue = rand.Next(1, 7)
-
-    'End If
-
-
-
-
-
-    'Puts intDie
-    'Next
-
     'System.Diagnostics.Debug.WriteLine(blnKeptDiceArray + "blnKeptDiceArray")
 
-
-
-
-
-
-    'Returns intRandomDieSide, a random integer from 1-6
-    'Return intRandomDieSide()
     'End Function
 
     Private Sub BtnRestartGame_Click(sender As Object, e As EventArgs) Handles BtnRestartGame.Click
