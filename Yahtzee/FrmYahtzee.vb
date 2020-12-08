@@ -11,6 +11,9 @@ Option Explicit On
 Public Class FrmYahtzee
     '================================================================================================================
     'Global Space
+    'Programmer: Ryan Isaacson / Github: Munchinator6354 
+    'Updated: December 07, 2020
+    'Description: Space to declare globally accessible variables, arrays, etc.
     '================================================================================================================
     'Globally sets up a new Random Object in memory
     Dim rand As New Random
@@ -35,6 +38,10 @@ Public Class FrmYahtzee
 
     '================================================================================================================
     'Yahtzee Form On Load Subroutine
+    'Subroutine:    FrmYahtzee_Load
+    'Programmer:    Ryan Isaacson / Github: Munchinator6354 
+    'Updated:       December 07, 2020
+    'Description:   Determines what happens when the Yahtzee Form is loaded.
     '================================================================================================================
     Public Sub FrmYahtzee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'On second game playthrough this allows blnKeptDiceArray to refresh all elements as "False"
@@ -88,6 +95,10 @@ Public Class FrmYahtzee
 
     '================================================================================================================
     'Dice Click Subroutines
+    'Subroutines:   BtnDice1_Click, BtnDice2_Click, BtnDice3_Click, BtnDice4_Click, BtnDice5_Click
+    'Programmer:    Ryan Isaacson / Github: Munchinator6354 
+    'Updated:       December 07, 2020
+    'Description:   Changes the appearance of dice when clicked and whether or not they are added as kept/held dice.
     '================================================================================================================
     Private Sub BtnDice1_Click(sender As Object, e As EventArgs) Handles BtnDice1.Click
         'If dice border color is red, make it green
@@ -161,12 +172,15 @@ Public Class FrmYahtzee
             BtnDice5.FlatAppearance.BorderColor = Color.Red
             'And switch it's kept/held value to False
             blnKeptDiceArray(4) = False
-
         End If
     End Sub
 
     '================================================================================================================
     'Roll The Dice Button Click Subroutine
+    'Subroutines:   BtnRollTheDice_Click
+    'Programmer:    Ryan Isaacson / Github: Munchinator6354 
+    'Updated:       December 07, 2020
+    'Description:   Handles the clciking of the Roll The Dice Button including Round Counter and  Dice Values.
     '================================================================================================================
     Public Sub BtnRollTheDice_Click(sender As Object, e As EventArgs) Handles BtnRollTheDice.Click
         'Decreases the remaining dice rolls by 1
@@ -220,7 +234,12 @@ Public Class FrmYahtzee
     End Sub
 
     '================================================================================================================
-    'Functions
+    'Functions Available to Call
+    'Function:      GenerateRandomDiceNum & IncreaseRollCount
+    'Programmer:    Ryan Isaacson / Github: Munchinator6354 
+    'Updated:       December 07, 2020
+    'Description:   GenerateRandomDiceNum generates a random number from 1-6 
+    '               Increase Roll Count increases the intRollCounter by 1
     '================================================================================================================
     Public Function GenerateRandomDiceNum(random As Random) As Integer
         Dim intDieValue As Integer = random.Next(1, 7)
@@ -233,7 +252,12 @@ Public Class FrmYahtzee
     End Function
 
     '================================================================================================================
-    'Restart Game Button and Exit Program Button
+    'Restart and Exit Game
+    'Subroutines:   Restart Game Button & Exit Program Button
+    'Programmer:    Ryan Isaacson / Github: Munchinator6354 
+    'Updated:       December 07, 2020
+    'Description:   BtnRestartGame_Click clears all controls, reinitializes all components, reloads controls, and reloads the form.
+    '               BtnExit_Click, simply exits the program.
     '================================================================================================================
     Private Sub BtnRestartGame_Click(sender As Object, e As EventArgs) Handles BtnRestartGame.Click
         'Clears all the controls on the Form
@@ -248,6 +272,4 @@ Public Class FrmYahtzee
         'Closes Program
         Close()
     End Sub
-
 End Class
-
