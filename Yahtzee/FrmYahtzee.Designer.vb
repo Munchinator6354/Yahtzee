@@ -161,9 +161,9 @@ Partial Class FrmYahtzee
         'lblRuleDescription
         '
         Me.lblRuleDescription.AutoSize = True
-        Me.lblRuleDescription.Location = New System.Drawing.Point(25, 195)
+        Me.lblRuleDescription.Location = New System.Drawing.Point(40, 195)
         Me.lblRuleDescription.Name = "lblRuleDescription"
-        Me.lblRuleDescription.Size = New System.Drawing.Size(447, 68)
+        Me.lblRuleDescription.Size = New System.Drawing.Size(400, 68)
         Me.lblRuleDescription.TabIndex = 20
         Me.lblRuleDescription.Text = resources.GetString("lblRuleDescription.Text")
         Me.lblRuleDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter

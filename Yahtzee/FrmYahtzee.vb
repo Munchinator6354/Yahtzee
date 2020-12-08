@@ -9,6 +9,9 @@ Option Explicit On
 '               by changing it's border to green. If the border is red, the dice will roll again.
 
 Public Class FrmYahtzee
+    '================================================================================================================
+    'Global Space
+    '================================================================================================================
     'Globally sets up a new Random Object in memory
     Dim rand As New Random
 
@@ -30,10 +33,14 @@ Public Class FrmYahtzee
     'Global array to hold integer values for the dice
     Dim intDieValueArr() As Integer = {6, 6, 6, 6, 6}
 
+    '================================================================================================================
+    'Yahtzee Form On Load Subroutine
+    '================================================================================================================
     Public Sub FrmYahtzee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'On second game playthrough this allows blnKeptDiceArray to refresh all elements as "False"
         For i = 0 To blnKeptDiceArray.Length - 1
             blnKeptDiceArray(i) = False
+            System.Diagnostics.Debug.WriteLine(blnKeptDiceArray(i) & "blnKeptDiceArray")
         Next
 
         'On second game playthrough this allows intRollRoundTotal to refresh at 0
@@ -77,66 +84,10 @@ Public Class FrmYahtzee
             'Changes the users' cursor to a hand when hovering over the button
             BtnArray(i).Cursor = Cursors.Hand
         Next
-
     End Sub
-
-    Public Sub BtnRollTheDice_Click(sender As Object, e As EventArgs) Handles BtnRollTheDice.Click
-        'Decreases the remaining dice rolls by 1
-        intCurrentRollCount -= 1
-
-        'Checks to qualify if the player has more dice rolls left
-        If intCurrentRollCount >= 0 Then
-
-            'Displays the current roll count to the screen
-            lblRollCounter.Text = "You have " & intCurrentRollCount & " rolls remaining"
-
-
-            'Establishes a new array to hold dice values in
-            Dim intDieValueArr(4) As Integer
-
-            'This block of code will check if a dice has been held/kept. If it has it will not re-roll the dice
-            For i = 0 To blnKeptDiceArray.Length - 1
-                If blnKeptDiceArray(i) = True Then
-                    intDieValueArr(i) = intDieValueArr(i)
-                ElseIf blnKeptDiceArray(i) = False Then
-                    intDieValueArr(i) = GenerateRandomDiceNum(rand)
-                End If
-            Next
-            ' System.Diagnostics.Debug.WriteLine("intDieValueArr Here:" & intDieValueArr(0) & intDieValueArr(1) & intDieValueArr(2) & intDieValueArr(3) & intDieValueArr(4))
-            'This block of code changes the appearence of each die button depending on it's dice value
-            For i = 0 To intDieValueArr.Length - 1
-                If intDieValueArr(i) = 1 Then
-                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
-                ElseIf intDieValueArr(i) = 2 Then
-                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
-                ElseIf intDieValueArr(i) = 3 Then
-                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
-                ElseIf intDieValueArr(i) = 4 Then
-                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
-                ElseIf intDieValueArr(i) = 5 Then
-                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
-                ElseIf intDieValueArr(i) = 6 Then
-                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
-                End If
-            Next
-
-            If intCurrentRollCount = 0 Then
-                For i = 0 To intDieValueArr.Length - 1
-                    blnKeptDiceArray(i) = True
-                    intRollRoundTotal += intDieValueArr(i)
-                Next
-                lblScoreCounter.Text = "This round's score is " & intRollRoundTotal & vbCrLf & "Select a category to add this score to."
-                MsgBox("You rolled a score of " & intRollRoundTotal & vbCrLf & "Please apply it to a score tile")
-            End If
-        Else
-            MsgBox("You are out of rolls")
-        End If
-
-    End Sub
-
 
     '================================================================================================================
-    'Functions & Subroutines
+    'Dice Click Subroutines
     '================================================================================================================
     Private Sub BtnDice1_Click(sender As Object, e As EventArgs) Handles BtnDice1.Click
         'If dice border color is red, make it green
@@ -151,7 +102,6 @@ Public Class FrmYahtzee
             'And switch it's kept/held value to False
             blnKeptDiceArray(0) = False
         End If
-
     End Sub
 
     Private Sub BtnDice2_Click(sender As Object, e As EventArgs) Handles BtnDice2.Click
@@ -196,7 +146,6 @@ Public Class FrmYahtzee
             BtnDice4.FlatAppearance.BorderColor = Color.Red
             'And switch it's kept/held value to False
             blnKeptDiceArray(3) = False
-
         End If
     End Sub
 
@@ -216,10 +165,63 @@ Public Class FrmYahtzee
         End If
     End Sub
 
+    '================================================================================================================
+    'Roll The Dice Button Click Subroutine
+    '================================================================================================================
+    Public Sub BtnRollTheDice_Click(sender As Object, e As EventArgs) Handles BtnRollTheDice.Click
+        'Decreases the remaining dice rolls by 1
+        intCurrentRollCount -= 1
 
+        'Checks to qualify if the player has more dice rolls left
+        If intCurrentRollCount >= 0 Then
 
+            'Displays the current roll count to the screen
+            lblRollCounter.Text = "You have " & intCurrentRollCount & " rolls remaining"
 
+            'This block of code will check if a dice has been held/kept. If it has it will not re-roll the dice
+            For i = 0 To blnKeptDiceArray.Length - 1
+                If blnKeptDiceArray(i) = True Then
+                    intDieValueArr(i) = intDieValueArr(i)
+                ElseIf blnKeptDiceArray(i) = False Then
+                    intDieValueArr(i) = GenerateRandomDiceNum(rand)
+                End If
+            Next
 
+            'This block of code changes the appearence of each die button depending on it's dice value
+            For i = 0 To intDieValueArr.Length - 1
+                If intDieValueArr(i) = 1 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
+                ElseIf intDieValueArr(i) = 2 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
+                ElseIf intDieValueArr(i) = 3 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
+                ElseIf intDieValueArr(i) = 4 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
+                ElseIf intDieValueArr(i) = 5 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
+                ElseIf intDieValueArr(i) = 6 Then
+                    BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
+                End If
+            Next
+
+            'This block of code executes when the current roll count is 0. It converts all dice to being held/kept, and then adds them into a total score variable.
+            'Then it presents the total to the screen to the player and displays a message box to the player in case they didn't see the text.
+            If intCurrentRollCount = 0 Then
+                For i = 0 To intDieValueArr.Length - 1
+                    blnKeptDiceArray(i) = True
+                    intRollRoundTotal += intDieValueArr(i)
+                Next
+                lblScoreCounter.Text = "This round's score is " & intRollRoundTotal & vbCrLf & "Select a category to add this score to."
+                MsgBox("You rolled a score of " & intRollRoundTotal & vbCrLf & "Please apply it to a score tile")
+            End If
+        Else
+            MsgBox("You are out of rolls")
+        End If
+    End Sub
+
+    '================================================================================================================
+    'Functions
+    '================================================================================================================
     Public Function GenerateRandomDiceNum(random As Random) As Integer
         Dim intDieValue As Integer = random.Next(1, 7)
         Return intDieValue
@@ -230,29 +232,9 @@ Public Class FrmYahtzee
         intRollCounter += currentRollCount
     End Function
 
-
-    'Public Function GenerateRandomDieNum(ByRef blnKeptDiceArr() As Boolean) As Integer
-
-    'Dim blnKeptDiceArray(4) As Boolean
-    'Sets up variable To store a random die Integer 1-6
-    'Dim intDieValue As Integer
-    'Set up an array To pass back With the dice numbers
-    'Dim intDiceValuesArr(4) As Integer
-
-    'Puts the array value passed In As blnKeptDiceArr into blnKeptDiceArray To be iterated through
-    'blnKeptDiceArray = blnKeptDiceArr
-
-    'For i = 0 To UBound(blnKeptDiceArray)
-
-    'If blnKeptDiceArray(i) = True Then
-    'blnKeptDiceArray(i) = True
-
-    'ElseIf blnKeptDiceArray(i) = False Then
-
-    'System.Diagnostics.Debug.WriteLine(blnKeptDiceArray + "blnKeptDiceArray")
-
-    'End Function
-
+    '================================================================================================================
+    'Restart Game Button and Exit Program Button
+    '================================================================================================================
     Private Sub BtnRestartGame_Click(sender As Object, e As EventArgs) Handles BtnRestartGame.Click
         'Clears all the controls on the Form
         Controls.Clear()
