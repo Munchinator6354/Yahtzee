@@ -131,23 +131,6 @@ Public Class FrmYahtzee
                 End If
             Next
 
-            'This block of code changes the appearence of each die button depending on it's dice value
-            'For i = 0 To intDieValueArr.Length - 1
-            'If intDieValueArr(i) = 1 Then
-            'BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice1.jpg")
-            'ElseIf intDieValueArr(i) = 2 Then
-            'BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice2.jpg")
-            'ElseIf intDieValueArr(i) = 3 Then
-            'BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice3.jpg")
-            'ElseIf intDieValueArr(i) = 4 Then
-            'BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice4.jpg")
-            'ElseIf intDieValueArr(i) = 5 Then
-            'BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice5.jpg")
-            'ElseIf intDieValueArr(i) = 6 Then
-            'BtnArray(i).BackgroundImage = Image.FromFile("..\Images\dice6.jpg")
-            'End If
-            'Next
-
             'This block of code executes when the current roll count is 0. It converts all dice to being held/kept, and then adds them into a total score variable.
             'Then it presents the total to the screen to the player and displays a message box to the player in case they didn't see the text.
             If intCurrentRollCount = 0 Then
