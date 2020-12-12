@@ -103,8 +103,8 @@ Public Class FrmYahtzee
     'Roll The Dice Button Click Subroutine
     'Subroutines:   BtnRollTheDice_Click
     'Programmer:    Ryan Isaacson / Github: Munchinator6354 
-    'Updated:       December 07, 2020
-    'Description:   Handles the clciking of the Roll The Dice Button including Round Counter and  Dice Values.
+    'Updated:       December 08, 2020
+    'Description:   Handles the clicking of the Roll The Dice Button including Round Counter and  Dice Values.
     '================================================================================================================
     Public Sub BtnRollTheDice_Click(sender As Object, e As EventArgs) Handles BtnRollTheDice.Click
         'Decreases the remaining dice rolls by 1
@@ -267,4 +267,438 @@ Public Class FrmYahtzee
         'Closes Program
         Close()
     End Sub
+End Class
+
+'====================================================================================================================
+
+'kenneth young
+Public Class formyahtzee
+    Dim dicerolled(5) As Integer
+
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ' score for ones to sixes
+    ' kenneth
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Private Sub ones_click(sender As Object, e As EventArgs) Handles ones.click
+        Dim total1 As Integer = 0
+        Dim totaltop As Integer
+        For x As Integer = 0 To 5
+            If dicerolled(x) = 1 Then
+                total1 += 1
+            End If
+        Next
+        ones.text = total1.ToString
+        ones.enabled = False
+        ones.forecolor = Color.LimeGreen
+        If ones.enabled = False And twos.enabled = False And threes.enabled = False And fours.enabled = False And fives.enabled = False And sixes.enabled = False Then
+            totaltop = totaltopscore()
+        End If
+        toptotal.text = bonus(totaltop).ToString
+        bonusscore.text = (totaltop + CInt(toptotal.text)).ToString
+    End Sub
+
+    Private Sub twos_click(sender As Object, e As EventArgs) Handles twos.click
+        Dim total2 As Integer = 0
+        Dim totaltop As Integer
+        For x As Integer = 0 To 5
+            If dicerolled(x) = 2 Then
+                total2 += 1
+            End If
+        Next
+        twos.text = total2.ToString
+        twos.enabled = False
+        twos.forecolor = Color.LimeGreen
+        If ones.enabled = False And twos.enabled = False And threes.enabled = False And fours.enabled = False And fives.enabled = False And sixes.enabled = False Then
+            totaltop = totaltopscore()
+        End If
+        toptotal.text = bonus(totaltop).ToString
+        bonusscore.text = (totaltop + CInt(toptotal.text)).ToString
+    End Sub
+
+    Private Sub threes_click(sender As Object, e As EventArgs) Handles threes.click
+        Dim total3 As Integer = 0
+        Dim totaltop As Integer
+        For x As Integer = 0 To 5
+            If dicerolled(x) = 3 Then
+                total3 += 1
+            End If
+        Next
+        threes.text = total3.ToString
+        threes.enabled = False
+        threes.forecolor = Color.LimeGreen
+        If ones.enabled = False And twos.enabled = False And threes.enabled = False And fours.enabled = False And fives.enabled = False And sixes.enabled = False Then
+            totaltop = totaltopscore()
+        End If
+        toptotal.text = bonus(totaltop).ToString
+        bonusscore.text = (totaltop + CInt(toptotal.text)).ToString
+    End Sub
+
+    Private Sub fours_click(sender As Object, e As EventArgs) Handles fours.click
+        Dim total4 As Integer = 0
+        Dim totaltop As Integer
+        For x As Integer = 0 To 5
+            If dicerolled(x) = 4 Then
+                total4 += 1
+            End If
+        Next
+        fours.text = total4.ToString
+        fours.enabled = False
+        fours.forecolor = Color.LimeGreen
+        If ones.enabled = False And twos.enabled = False And threes.enabled = False And fours.enabled = False And fives.enabled = False And sixes.enabled = False Then
+            totaltop = totaltopscore()
+        End If
+        toptotal.text = bonus(totaltop).ToString
+        bonusscore.text = (totaltop + CInt(toptotal.text)).ToString
+    End Sub
+
+    Private Sub fives_click(sender As Object, e As EventArgs) Handles fives.click
+        Dim total5 As Integer = 0
+        Dim totaltop As Integer
+        For x As Integer = 0 To 5
+            If dicerolled(x) = 5 Then
+                total5 += 1
+            End If
+        Next
+        fives.text = total5.ToString
+        fives.enabled = False
+        fives.forecolor = Color.LimeGreen
+        If ones.enabled = False And twos.enabled = False And threes.enabled = False And fours.enabled = False And fives.enabled = False And sixes.enabled = False Then
+            totaltop = totaltopscore()
+        End If
+        toptotal.text = bonus(totaltop).ToString
+        bonusscore.text = (totaltop + CInt(toptotal.text)).ToString
+    End Sub
+
+    Private Sub sixes_click(sender As Object, e As EventArgs) Handles sixes.click
+        Dim total6 As Integer = 0
+        Dim totaltop As Integer
+        For x As Integer = 0 To 5
+            If dicerolled(x) = 6 Then
+                total6 += 1
+            End If
+        Next
+        sixes.text = total6.ToString
+        sixes.enabled = False
+        sixes.forecolor = Color.LimeGreen
+        If ones.enabled = False And twos.enabled = False And threes.enabled = False And fours.enabled = False And fives.enabled = False And sixes.enabled = False Then
+            totaltop = totaltopscore()
+        End If
+        toptotal.text = bonus(totaltop).ToString
+        bonusscore.text = (totaltop + CInt(toptotal.text)).ToString
+    End Sub
+
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ' total top score and bonus
+    ' kenneth
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    Public Function totaltopscore() As Integer
+        Dim total As Integer = 0
+        Dim a As Integer = CInt(ones.text)
+        Dim b As Integer = CInt(twos.text)
+        Dim c As Integer = CInt(threes.text)
+        Dim d As Integer = CInt(fours.text)
+        Dim e As Integer = CInt(fives.text)
+        Dim f As Integer = CInt(sixes.text)
+        total = a + b + c + d + e + f
+        Return total
+    End Function
+
+    Public Function bonus(x As Integer) As Integer
+        Dim bonuspoints As Integer = 0
+        If x > 62 Then
+            bonuspoints = 35
+        End If
+        Return bonuspoints
+    End Function
+
+
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ' calculate bonus
+    ' kenneth
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    Public Function calcbonus(a As Integer, b As Integer, c As Integer, d As Integer, e As Integer, f As Integer) As Integer
+        Dim bonus As Integer
+        If a + b + c + d + e + f >= 63 Then
+            bonus = 35
+        End If
+        Return bonus
+    End Function
+    'just copy calcbonus(total1, total2, total3, total4, total5, total6)
+
+
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ' lower half scoreboards
+    ' kenneth
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Private Sub tofak_click(sender As Object, e As EventArgs) Handles tofak.click
+        Dim counter(6) As Integer
+        Dim tofakpoint As Integer
+        Dim tf As Boolean = False
+        For x = 0 To 4
+            If dicerolled(x) = 1 Then
+                counter(0) += 1
+            ElseIf dicerolled(x) = 2 Then
+                counter(1) += 1
+            ElseIf dicerolled(x) = 3 Then
+                counter(2) += 1
+            ElseIf dicerolled(x) = 4 Then
+                counter(3) += 1
+            ElseIf dicerolled(x) = 5 Then
+                counter(4) += 1
+            ElseIf dicerolled(x) = 6 Then
+                counter(5) += 1
+            End If
+        Next
+        For x = 0 To 5
+            If counter(x) >= 3 Then
+                For y = 0 To 4
+                    tofakpoint += dicerolled(y)
+                Next
+            End If
+        Next
+        tofak.text = tofakpoint.ToString
+        tofak.enabled = False
+        tf = checkgame()
+        If tf = True Then
+            endscore.text = totalallscore().ToString
+        End If
+    End Sub
+
+    Private Sub fofak_click(sender As Object, e As EventArgs) Handles fofak.click
+        Dim counter(6) As Integer
+        Dim tf As Boolean = False
+        Dim fofakpoint As Integer
+        For x = 0 To 4
+            If dicerolled(x) = 1 Then
+                counter(0) += 1
+            ElseIf dicerolled(x) = 2 Then
+                counter(1) += 1
+            ElseIf dicerolled(x) = 3 Then
+                counter(2) += 1
+            ElseIf dicerolled(x) = 4 Then
+                counter(3) += 1
+            ElseIf dicerolled(x) = 5 Then
+                counter(4) += 1
+            ElseIf dicerolled(x) = 6 Then
+                counter(5) += 1
+            End If
+        Next
+        For x = 0 To 5
+            If counter(x) >= 4 Then
+                For y = 0 To 4
+                    fofakpoint += dicerolled(y)
+                Next
+            End If
+        Next
+        fofak.text = fofakpoint.ToString
+        fofak.enabled = False
+        tf = checkgame()
+        If tf = True Then
+            endscore.text = totalallscore().ToString
+        End If
+    End Sub
+
+    Private Sub fullhouse_click(sender As Object, e As EventArgs) Handles fullhouse.click
+        Dim counter(6) As Integer
+        Dim fullhousepoint As Integer = 0
+        Dim tf As Boolean = False
+        For x = 0 To 5
+            counter(x) = 0
+        Next
+        For x = 0 To 4
+            If dicerolled(x) = 1 Then
+                counter(0) += 1
+            ElseIf dicerolled(x) = 2 Then
+                counter(1) += 1
+            ElseIf dicerolled(x) = 3 Then
+                counter(2) += 1
+            ElseIf dicerolled(x) = 4 Then
+                counter(3) += 1
+            ElseIf dicerolled(x) = 5 Then
+                counter(4) += 1
+            ElseIf dicerolled(x) = 6 Then
+                counter(5) += 1
+            End If
+        Next
+        For x As Integer = 0 To 5
+            For z As Integer = 0 To 5
+                If counter(x) = 3 And counter(z) = 2 Then
+                    fullhousepoint = 25
+                End If
+            Next
+        Next
+        fullhouse.text = fullhousepoint.ToString
+        fullhouse.enabled = False
+        tf = checkgame()
+        If tf = True Then
+            endscore.text = totalallscore().ToString
+        End If
+    End Sub
+
+    Private Sub smallstraight_click(sender As Object, e As EventArgs) Handles smallstraight.click
+        Dim counter(6) As Integer
+        Dim tf As Boolean = False
+        Dim smallstraightpoint As Integer
+        For x = 0 To 4
+            If dicerolled(x) = 1 Then
+                counter(0) += 1
+            ElseIf dicerolled(x) = 2 Then
+                counter(1) += 1
+            ElseIf dicerolled(x) = 3 Then
+                counter(2) += 1
+            ElseIf dicerolled(x) = 4 Then
+                counter(3) += 1
+            ElseIf dicerolled(x) = 5 Then
+                counter(4) += 1
+            ElseIf dicerolled(x) = 6 Then
+                counter(5) += 1
+            End If
+        Next
+        For x = 0 To 3
+            If counter(x) > 0 And counter(x + 1) > 0 And counter(x + 2) > 0 Then
+                smallstraightpoint = 30
+            End If
+        Next
+        smallstraight.text = smallstraightpoint.ToString
+        smallstraight.enabled = False
+        tf = checkgame()
+        If tf = True Then
+            endscore.text = totalallscore().ToString
+        End If
+    End Sub
+
+    Private Sub largestraight_click(sender As Object, e As EventArgs) Handles largestraight.click
+        Dim counter(6) As Integer
+        Dim tf As Boolean = False
+        Dim largestraightpoint As Integer
+        For x = 0 To 4
+            If dicerolled(x) = 1 Then
+                counter(0) += 1
+            ElseIf dicerolled(x) = 2 Then
+                counter(1) += 1
+            ElseIf dicerolled(x) = 3 Then
+                counter(2) += 1
+            ElseIf dicerolled(x) = 4 Then
+                counter(3) += 1
+            ElseIf dicerolled(x) = 5 Then
+                counter(4) += 1
+            ElseIf dicerolled(x) = 6 Then
+                counter(5) += 1
+            End If
+        Next
+        For x = 0 To 2
+            If counter(x) > 0 And counter(x + 1) > 0 And counter(x + 2) > 0 And counter(x + 3) > 0 Then
+                largestraightpoint = 40
+            End If
+        Next
+        largestraight.text = largestraightpoint.ToString
+        largestraight.enabled = False
+        tf = checkgame()
+        If tf = True Then
+            endscore.text = totalallscore().ToString
+        End If
+    End Sub
+
+    Private Sub chance_click(sender As Object, e As EventArgs) Handles chance.click
+        Dim counter(6) As Integer
+        Dim tf As Boolean = False
+        Dim chancepoint As Integer = 0
+        For x = 0 To 4
+            If dicerolled(x) = 1 Then
+                chancepoint += 1
+            ElseIf dicerolled(x) = 2 Then
+                chancepoint += 2
+            ElseIf dicerolled(x) = 3 Then
+                chancepoint += 3
+            ElseIf dicerolled(x) = 4 Then
+                chancepoint += 4
+            ElseIf dicerolled(x) = 5 Then
+                chancepoint += 5
+            ElseIf dicerolled(x) = 6 Then
+                chancepoint += 6
+            End If
+        Next
+        chance.text = chancepoint.ToString
+        chance.enabled = False
+        tf = checkgame()
+        If tf = True Then
+            endscore.text = totalallscore().ToString
+        End If
+    End Sub
+
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ' yahtzee score
+    ' kenneth
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    Private Sub yahtzee_click(sender As Object, e As EventArgs) Handles yahtzee.click
+        Dim counter(6) As Integer
+        Dim yahtzeepoint As Integer = 0
+        Dim tf As Boolean = False
+        For x = 0 To 4
+            If dicerolled(x) = 1 Then
+                counter(0) += 1
+            ElseIf dicerolled(x) = 2 Then
+                counter(1) += 1
+            ElseIf dicerolled(x) = 3 Then
+                counter(2) += 1
+            ElseIf dicerolled(x) = 4 Then
+                counter(3) += 1
+            ElseIf dicerolled(x) = 5 Then
+                counter(4) += 1
+            ElseIf dicerolled(x) = 6 Then
+                counter(5) += 1
+            End If
+        Next
+        If yahtzeepoint = 0 Then
+            For x = 0 To 5
+                If counter(x) = 5 Then
+                    yahtzeepoint += 50
+                End If
+            Next
+        Else
+            For x = 0 To 5
+                If counter(x) = 5 Then
+                    yahtzeepoint += 100
+                End If
+            Next
+        End If
+        Yahtzee.text = yahtzeepoint.ToString
+        Yahtzee.enabled = False
+
+        tf = checkgame()
+        If tf = True Then
+            endscore.text = totalallscore().ToString
+        End If
+    End Sub
+    'need to put    "yahtzee.enabled = true"     if the person rolled another yahtzee
+
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ' total all score
+    ' kenneth
+    '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    Public Function totalallscore() As Integer
+        Dim total As Integer = 0
+        Dim a As Integer = CInt(toptotal.text)
+        Dim b As Integer = CInt(tofak.text)
+        Dim c As Integer = CInt(fofak.text)
+        Dim d As Integer = CInt(fullhouse.text)
+        Dim e As Integer = CInt(smallstraight.text)
+        Dim f As Integer = CInt(largestraight.text)
+        Dim g As Integer = CInt(chance.text)
+        Dim h As Integer = CInt(Yahtzee.text)
+        total = a + b + c + d + e + f + g + h
+        Return total
+    End Function
+
+    Public Function checkgame() As Boolean
+        Dim tf As Boolean = False
+        If tofak.enabled = False And fofak.enabled = False And fullhouse.enabled = False And chance.enabled = False And smallstraight.enabled = False And largestraight.enabled = False And Yahtzee.enabled = False Then
+            tf = True
+        End If
+        Return tf
+    End Function
 End Class
